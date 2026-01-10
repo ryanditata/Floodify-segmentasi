@@ -7,9 +7,9 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 export default function UserIndex() {
     const lenisRef = useRef<Lenis | null>(null);
-    const [isOpen, setIsOpen] = useState(false);
     const { props } = usePage<any>();
     const isAuthenticated = !!props.auth?.user;
+    const [isDragging, setIsDragging] = useState(false);
 
     useEffect(() => {
         const lenis = new Lenis({
@@ -59,6 +59,31 @@ export default function UserIndex() {
     const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0]) {
             const file = e.target.files[0];
+            setData('image', file);
+            setPreview(URL.createObjectURL(file));
+            setShowSuccess(false);
+            setShowError(false);
+        }
+    };
+
+    const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+        e.preventDefault();
+        setIsDragging(true);
+    };
+
+    const handleDragLeave = () => {
+        setIsDragging(false);
+    };
+
+    const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+        e.preventDefault();
+        setIsDragging(false);
+
+        if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+            const file = e.dataTransfer.files[0];
+
+            if (!file.type.startsWith("image/")) return;
+
             setData('image', file);
             setPreview(URL.createObjectURL(file));
             setShowSuccess(false);
@@ -241,7 +266,17 @@ export default function UserIndex() {
                                 <label className="block mb-3 text-lg font-semibold text-neutral-900 dark:text-neutral-200">
                                     Upload Gambar
                                 </label>
-                                <div className="border-2 border-dashed border-neutral-300 dark:border-neutral-600 rounded-xl p-8 text-center hover:border-blue-500 dark:hover:border-blue-400 transition-colors">
+                                <div
+                                    onDragOver={handleDragOver}
+                                    onDragLeave={handleDragLeave}
+                                    onDrop={handleDrop}
+                                    className={`border-2 border-dashed rounded-xl p-8 text-center transition-colors
+                                        ${isDragging
+                                            ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
+                                            : 'border-neutral-300 dark:border-neutral-600 hover:border-blue-500 dark:hover:border-blue-400'
+                                        }
+                                    `}
+                                >
                                     <input 
                                         type="file" 
                                         accept="image/jpeg,image/png,image/jpg"

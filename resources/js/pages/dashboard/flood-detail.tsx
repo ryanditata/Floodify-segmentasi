@@ -3,7 +3,7 @@ import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Calendar, ArrowLeft, Download, ChevronLeft } from 'lucide-react';
+import { Calendar, Download, ChevronLeft } from 'lucide-react';
 
 interface Detection {
     id: number;

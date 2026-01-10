@@ -22,5 +22,6 @@ yarn-error.log
 /.nova
 /.vscode
 /.zed
+ml_service/models/*
 *.h5
-ml_service/models/
+!ml_service/models/README.md

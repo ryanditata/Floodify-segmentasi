@@ -14,7 +14,7 @@ app = FastAPI(title="Floodify ML Service")
 # Enable CORS (required for Laravel / React)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],          # Development only
+    allow_origins=["*"],    
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -45,8 +45,6 @@ def preprocess_image(image: Image.Image) -> np.ndarray:
     img_array = np.array(image)
 
     # NOTE:
-    # Aktifkan baris di bawah HANYA jika training pakai cv2.imread()
-    # img_array = img_array[:, :, ::-1]  # RGB -> BGR
 
     # Normalize (0–1)
     img_array = img_array / 255.0
