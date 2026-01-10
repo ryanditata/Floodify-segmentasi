@@ -45,4 +45,12 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    /**
+     * Get the flood detections for the user.
+     */
+    public function floodDetections()
+    {
+        return $this->hasMany(FloodDetection::class);
+    }
 }

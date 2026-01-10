@@ -3,7 +3,7 @@ export default function AppLogo() {
         <>
             <div className="flex items-center">
                 <div className="w-10 h-auto">
-                    <img src="/images/logo.png" alt="Icon Dashboard" />
+                    <img src="\images\logo-navbar.png" alt="Icon Dashboard" />
                 </div>
                 <div className="ml-2 grid flex-1 text-left text-base">
                     <span className="truncate leading-tight font-semibold">FLOODIFY</span>

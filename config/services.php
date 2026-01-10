@@ -44,4 +44,6 @@ return [
         'is_3ds' => env('MIDTRANS_IS_3DS', true),
     ],
 
+    'ml_api' => env('ML_API_URL'),
+
 ];
