@@ -11,7 +11,6 @@ import base64
 # ===============================
 app = FastAPI(title="Floodify ML Service")
 
-# Enable CORS (required for Laravel / React)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],    
@@ -35,9 +34,6 @@ print("✅ Model loaded successfully")
 # PREPROCESSING FUNCTION
 # ===============================
 def preprocess_image(image: Image.Image) -> np.ndarray:
-    """
-    Preprocess image to match U-Net training configuration
-    """
     # Resize image
     image = image.resize((IMG_WIDTH, IMG_HEIGHT))
 
@@ -59,9 +55,6 @@ def preprocess_image(image: Image.Image) -> np.ndarray:
 # ===============================
 @app.post("/predict")
 async def predict(file: UploadFile = File(...)):
-    """
-    Predict flood area using U-Net segmentation model
-    """
     # Validate file type
     if file.content_type not in ["image/jpeg", "image/png"]:
         return {

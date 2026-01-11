@@ -81,7 +81,7 @@ class UserController extends Controller
 
         } catch (\Throwable $e) {
             return back()->withErrors([
-                'connection_error' => 'Tidak dapat terhubung ke service Python. Pastikan API berjalan.'
+                'connection_error' => 'Tidak dapat terhubung ke service.'
             ]);
         }
     }

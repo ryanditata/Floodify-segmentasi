@@ -1,7 +1,7 @@
 import { useForm, usePage, Head, router } from '@inertiajs/react';
 import Lenis from "@studio-freight/lenis";
 import { useEffect, useState,useRef, ChangeEvent, FormEvent } from 'react';
-import { Upload, Brain, Zap, Globe, CheckCircle2, AlertCircle, X, Loader2, Waves, Menu } from 'lucide-react';
+import { Upload, Brain, Zap, Globe, CheckCircle2, AlertCircle, X, Loader2, Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
@@ -12,6 +12,7 @@ export default function UserIndex() {
     const [isDragging, setIsDragging] = useState(false);
 
     const [isScrolled, setIsScrolled] = useState(false);
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     useEffect(() => {
         const lenis = new Lenis({
@@ -42,7 +43,7 @@ export default function UserIndex() {
         };
     }, []);
     
-    const { data, setData, post, processing, errors, reset } = useForm({
+    const { setData, post, processing, errors, reset } = useForm({
         image: null as File | null,
     });
     
@@ -121,6 +122,7 @@ export default function UserIndex() {
         const el = document.getElementById(id);
         if (el) {
             el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            setIsMobileMenuOpen(false);
         }
     };
 
@@ -139,7 +141,7 @@ export default function UserIndex() {
                 className={`fixed top-0 left-0 right-0 z-50 flex justify-center px-4 transition-all duration-500 ease-in-out ${
                     isScrolled ? 'pt-4' : 'pt-8'
                 }`}
-            >
+                >
                 <nav className="flex items-center justify-between w-full max-w-5xl bg-white/80 dark:bg-[#111111]/80 backdrop-blur-md rounded-full pl-6 pr-2 py-2 shadow-2xl">
                     
                     {/* Logo */}
@@ -154,7 +156,7 @@ export default function UserIndex() {
                         />
                     </div>
 
-                    {/* Menu */}
+                    {/* Desktop Menu */}
                     <div className="hidden md:flex items-center space-x-8">
                         <button 
                             onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
@@ -201,11 +203,56 @@ export default function UserIndex() {
                         )}
                         
                         {/* Mobile */}
-                        <button className="md:hidden text-neutral-300 hover:text-white p-2">
-                            <Menu className="w-6 h-6" />
+                        <button 
+                            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                            className="md:hidden text-neutral-600 hover:text-black dark:text-neutral-300 dark:hover:text-white p-2 focus:outline-none"
+                        >
+                            {isMobileMenuOpen ? (
+                                <X className="w-8 h-8" />
+                            ) : (
+                                <Menu className="w-8 h-8" />
+                            )}
                         </button>
                     </div>
                 </nav>
+
+                 {/* Mobile Menu */}
+                <div className={`absolute top-full mt-2 w-[calc(100%-2rem)] max-w-5xl bg-white/90 dark:bg-[#111111]/90 backdrop-blur-xl border border-neutral-200 dark:border-neutral-800 rounded-2xl shadow-2xl overflow-hidden transition-all duration-300 origin-top
+                    ${isMobileMenuOpen ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-95 -translate-y-4 pointer-events-none'}`}>
+
+                    <div className="flex flex-col p-4 space-y-2">
+                        <button
+                            onClick={() => {
+                                window.scrollTo({ top: 0, behavior: 'smooth' });
+                                setIsMobileMenuOpen(false);
+                            }}
+                            className="p-3 text-left font-medium text-neutral-700 dark:text-neutral-200 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-xl transition-colors"
+                        >
+                            Home
+                        </button>
+
+                        <button
+                            onClick={() => scrollToSection('cara-kerja')}
+                            className="p-3 text-left font-medium text-neutral-700 dark:text-neutral-200 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-xl transition-colors"
+                        >
+                            Workflows
+                        </button>
+
+                        <button
+                            onClick={() => scrollToSection('detection')}
+                            className="p-3 text-left font-medium text-neutral-700 dark:text-neutral-200 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-xl transition-colors"
+                        >
+                            Detection
+                        </button>
+
+                        <button
+                            onClick={() => scrollToSection('features')}
+                            className="p-3 text-left font-medium text-neutral-700 dark:text-neutral-200 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-xl transition-colors"
+                        >
+                            Features
+                        </button>
+                    </div>
+                </div>
             </div>
 
             {/* Alert Messages */}
@@ -250,11 +297,11 @@ export default function UserIndex() {
                 <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                     <div className="max-w-4xl mx-auto text-center">
-                        <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-neutral-900 dark:text-neutral-100 mb-6 animate-fade-in">
+                        <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-neutral-900 dark:text-neutral-100 mb-6 animate-fade-in">
                             Flood Area Detection
                             <span className="block text-blue-600 dark:text-blue-400">with AI</span>
                         </h1>
-                        <p className="text-xl md:text-2xl text-neutral-600 dark:text-neutral-300 mb-8 max-w-2xl mx-auto">
+                        <p className="text-lg md:text-2xl text-neutral-600 dark:text-neutral-300 mb-8 max-w-2xl mx-auto">
                             Deteksi area banjir secara akurat menggunakan teknologi AI U-Net. 
                             Analisis gambar satelit dan foto udara untuk identifikasi area terdampak banjir dengan presisi tinggi.
                         </p>
@@ -290,19 +337,19 @@ export default function UserIndex() {
             <section id="cara-kerja" className="py-20 bg-white dark:bg-neutral-900">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-16">
-                        <h2 className="text-4xl md:text-5xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">
+                        <h2 className="text-3xl md:text-5xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">
                             Cara Kerja
                         </h2>
                         <p className="text-lg text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto">
                             Proses deteksi banjir yang sederhana dan cepat dalam tiga langkah
                         </p>
                     </div>
-                    <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                    <div className="grid lg:grid-cols-3 gap-8 max-w-5xl mx-auto">
                         <div className="text-center p-8 rounded-xl bg-gradient-to-br from-blue-50 to-cyan-50 dark:from-neutral-800 dark:to-neutral-700 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-2">
                             <div className="w-20 h-20 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
                                 <Upload className="w-10 h-10 text-white" />
                             </div>
-                            <h3 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">
+                            <h3 className="text-xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">
                                 Step 1: Upload Gambar
                             </h3>
                             <p className="text-neutral-600 dark:text-neutral-400">
@@ -313,7 +360,7 @@ export default function UserIndex() {
                             <div className="w-20 h-20 bg-purple-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
                                 <Brain className="w-10 h-10 text-white" />
                             </div>
-                            <h3 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">
+                            <h3 className="text-xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">
                                 Step 2: AI U-Net Menganalisis
                             </h3>
                             <p className="text-neutral-600 dark:text-neutral-400">
@@ -324,7 +371,7 @@ export default function UserIndex() {
                             <div className="w-20 h-20 bg-green-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
                                 <CheckCircle2 className="w-10 h-10 text-white" />
                             </div>
-                            <h3 className="text-2xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">
+                            <h3 className="text-xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">
                                 Step 3: Area Banjir Ditampilkan
                             </h3>
                             <p className="text-neutral-600 dark:text-neutral-400">
@@ -339,7 +386,7 @@ export default function UserIndex() {
             <section id="detection" className="py-20 bg-gradient-to-br from-neutral-50 to-blue-50 dark:from-neutral-800 dark:to-neutral-900">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-16">
-                        <h2 className="text-4xl md:text-5xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">
+                        <h2 className="text-3xl md:text-5xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">
                             Deteksi Area Banjir
                         </h2>
                         <p className="text-lg text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto">
@@ -465,7 +512,7 @@ export default function UserIndex() {
             <section id="features" className="py-20 bg-white dark:bg-neutral-900">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-16">
-                        <h2 className="text-4xl md:text-5xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">
+                        <h2 className="text-3xl md:text-5xl font-bold text-neutral-900 dark:text-neutral-100 mb-4">
                             Fitur Unggulan
                         </h2>
                         <p className="text-lg text-neutral-600 dark:text-neutral-400 max-w-2xl mx-auto">
