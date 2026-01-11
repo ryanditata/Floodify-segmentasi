@@ -1,7 +1,7 @@
 import { useForm, usePage, Head, router } from '@inertiajs/react';
 import Lenis from "@studio-freight/lenis";
 import { useEffect, useState,useRef, ChangeEvent, FormEvent } from 'react';
-import { Upload, Brain, Zap, Globe, CheckCircle2, AlertCircle, X, Loader2 } from 'lucide-react';
+import { Upload, Brain, Zap, Globe, CheckCircle2, AlertCircle, X, Loader2, Waves, Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
@@ -10,6 +10,8 @@ export default function UserIndex() {
     const { props } = usePage<any>();
     const isAuthenticated = !!props.auth?.user;
     const [isDragging, setIsDragging] = useState(false);
+
+    const [isScrolled, setIsScrolled] = useState(false);
 
     useEffect(() => {
         const lenis = new Lenis({
@@ -24,6 +26,16 @@ export default function UserIndex() {
             requestAnimationFrame(raf);
         };
         requestAnimationFrame(raf);
+
+        const handleScroll = () => {
+            if (window.scrollY > 50) {
+                setIsScrolled(true);
+            } else {
+                setIsScrolled(false);
+            }
+        };
+
+        window.addEventListener('scroll', handleScroll);
 
         return () => {
             lenis.destroy();
@@ -122,6 +134,80 @@ export default function UserIndex() {
 
     return (
         <>
+            {/* Navbar */}
+            <div 
+                className={`fixed top-0 left-0 right-0 z-50 flex justify-center px-4 transition-all duration-500 ease-in-out ${
+                    isScrolled ? 'pt-4' : 'pt-8'
+                }`}
+            >
+                <nav className="flex items-center justify-between w-full max-w-5xl bg-white/80 dark:bg-[#111111]/80 backdrop-blur-md rounded-full pl-6 pr-2 py-2 shadow-2xl">
+                    
+                    {/* Logo */}
+                    <div 
+                        className="flex items-center gap-3 cursor-pointer group" 
+                        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                    >
+                        <img 
+                            src="/images/logo-navbar.png"
+                            alt="Floodify Logo"
+                            className="h-10 me-16 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+                        />
+                    </div>
+
+                    {/* Menu */}
+                    <div className="hidden md:flex items-center space-x-8">
+                        <button 
+                            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                            className="text-sm font-medium text-neutral-600 hover:text-black dark:text-neutral-300 dark:hover:text-white transition-colors cursor-pointer"
+                        >
+                            Home
+                        </button>
+                        <button 
+                            onClick={() => scrollToSection('cara-kerja')}
+                            className="text-sm font-medium text-neutral-600 hover:text-black dark:text-neutral-300 dark:hover:text-white transition-colors cursor-pointer"
+                        >
+                            Workflows
+                        </button>
+                        <button 
+                            onClick={() => scrollToSection('detection')}
+                            className="text-sm font-medium text-neutral-600 hover:text-black dark:text-neutral-300 dark:hover:text-white transition-colors cursor-pointer"
+                        >
+                            Detection
+                        </button>
+                        <button 
+                            onClick={() => scrollToSection('features')}
+                            className="text-sm font-medium text-neutral-600 hover:text-black dark:text-neutral-300 dark:hover:text-white transition-colors cursor-pointer"
+                        >
+                            Features
+                        </button>
+                    </div>
+
+                    {/* Auth Button */}
+                    <div className="flex items-center gap-2">
+                        {isAuthenticated ? (
+                            <Button
+                                onClick={() => router.visit('dashboard/dashboard')}
+                                className="bg-blue-600 hover:bg-blue-700 text-white rounded-full px-6 py-2.5 font-semibold transition-all shadow-lg h-auto text-sm cursor-pointer"
+                            >
+                                Dashboard
+                            </Button>
+                        ) : (
+                            <Button
+                                onClick={() => router.visit('/login')}
+                                className="bg-blue-600 hover:bg-blue-700 text-white rounded-full px-8 py-2.5 font-semibold transition-all shadow-lg h-auto text-sm cursor-pointer"
+                            >
+                                Login
+                            </Button>
+                        )}
+                        
+                        {/* Mobile */}
+                        <button className="md:hidden text-neutral-300 hover:text-white p-2">
+                            <Menu className="w-6 h-6" />
+                        </button>
+                    </div>
+                </nav>
+            </div>
+
             {/* Alert Messages */}
             {showSuccess && successMessage && (
                 <div className="fixed top-4 right-4 z-50 max-w-md">
@@ -375,7 +461,7 @@ export default function UserIndex() {
                 </div>
             </section>
 
-            {/* Feature */}
+            {/* Features */}
             <section id="features" className="py-20 bg-white dark:bg-neutral-900">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center mb-16">
@@ -428,11 +514,15 @@ export default function UserIndex() {
             </section>
 
             {/* Footer */}
-            <footer className="bg-neutral-900 dark:bg-black text-neutral-300 py-12">
+            <footer className="bg-neutral-900 dark:bg-black text-neutral-300 py-8">
                 <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="text-center">
-                        <h3 className="text-2xl font-bold text-white mb-2">Floodify</h3>
-                        <p className="text-neutral-400 mb-4">
+                        <img 
+                            src="images/logo-navbar.png" 
+                            alt="Floodify Logo"
+                            className='h-20 mx-auto'
+                        />
+                        <p className="text-neutral-400 mb-6">
                             Flood Area Detection with AI
                         </p>
                         <p className="text-sm text-neutral-500">
