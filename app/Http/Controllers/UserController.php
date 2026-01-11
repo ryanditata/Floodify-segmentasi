@@ -13,7 +13,7 @@ class UserController extends Controller
 {
     public function index()
     {
-        return Inertia::render('user/index');
+        return Inertia::render('landingpage/index');
     }
 
     public function detect(Request $request)
