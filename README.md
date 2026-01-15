@@ -36,7 +36,7 @@ Floodify adalah aplikasi berbasis web untuk mendeteksi area banjir pada citra sa
 ### Step 1: Clone Repository
 
 ```bash
-git clone [https://github.com/ryanditata/Floodify-segmentasi.git](https://github.com/ryanditata/Floodify-segmentasi.git)
+git clone https://github.com/ryanditata/Floodify-segmentasi.git
 cd Floodify
 ```
 
