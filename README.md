@@ -2,6 +2,9 @@
 
 Floodify adalah aplikasi berbasis web untuk mendeteksi area banjir pada citra satelit atau foto udara menggunakan teknologi Deep Learning (U-Net).
 
+<img width="1613" height="937" alt="Cuplikan layar 2026-01-15 175531" src="https://github.com/user-attachments/assets/3dff3c53-da35-43a1-9e6f-39accfa91664" />
+<img width="1551" height="911" alt="Cuplikan layar 2026-01-15 175608" src="https://github.com/user-attachments/assets/6e8ceafe-bdff-4b62-9f59-38dc989f2bc9" />
+
 ## 🏗️ Tech Stack
 
 ### 🧠 AI & Machine Learning Service
