@@ -68,7 +68,7 @@ php artisan db:seed
 # Install Python Libraries Pastikan Anda berada di root folder project (atau folder tempat api.py berada).
 pip install fastapi uvicorn tensorflow numpy pillow python-multipart
 
-insstall file model: https://drive.google.com/file/d/13Wtra4GXFeejVji9DwRty-7PlLkXe0rY/view?usp=sharing
+install file model: https://drive.google.com/file/d/13Wtra4GXFeejVji9DwRty-7PlLkXe0rY/view?usp=sharing
 
 # Setup Model Pastikan file model .h5 sudah ada di lokasi yang benar:
 models/model_unet_best.h5
